@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProcess>
+#include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QProcess logProcess;
+    QStandardItemModel model;
     
     void Start(bool b);
 };

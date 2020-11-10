@@ -18,6 +18,9 @@
     <item row="0" column="0">
      <widget class="QTextBrowser" name="textBrowser"/>
     </item>
+    <item row="1" column="0">
+     <widget class="QTableView" name="tableView"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
