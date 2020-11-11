@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <time.h>
 #include <QScrollBar>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     
     ui->tableView->setModel(&model);
     ui->tableView->setWordWrap(true);
+    ui->tableView->setColumnWidth(3, 400);
+    ui->textBrowser->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -47,58 +50,69 @@ void MainWindow::Start(bool b)
                                   R"((?P<Function>.*) )"
                                   R"(\[(?P<Line>\d+)] )"
                                   R"(-- (?P<Content>[\s\S]*)')");
-            QString strRow;
-            QList<QStandardItem *>itemRow;
+            QString strContent;
             clock_t lastInsertTime = clock();
+            QFile logFile("device.log");
+            logFile.open(QFile::WriteOnly);
             
             while(ui->actionStart->isChecked() == true)
             {
                 QByteArray arr = logProcess.readLine();
+                if(logFile.isOpen())
+                    logFile.write(arr);
                 
                 if(!arr.isEmpty())
                 {
                     QString str(arr);
                     bool isScrollToEnd = ui->textBrowser->verticalScrollBar()->value() > ui->textBrowser->verticalScrollBar()->maximum()-20;
                     ui->textBrowser->insertPlainText(str);
-                    if(isScrollToEnd)
+                    if(ui->textBrowser->isVisible() == true && isScrollToEnd == true)
                         ui->textBrowser->moveCursor(QTextCursor::End);
                     
                     QRegularExpressionMatch match = splitPattern.match(str);
+                    isScrollToEnd = ui->tableView->verticalScrollBar()->value()==ui->tableView->verticalScrollBar()->maximum();
                     if((match.hasMatch() && match.lastCapturedIndex() == 4))
                     {
-                        qDebug()<<"End   " << strRow << itemRow;
-                        isScrollToEnd = ui->tableView->verticalScrollBar()->value()==ui->tableView->verticalScrollBar()->maximum();
+                        QList<QStandardItem *>itemRow;
+                        qDebug()<<"End   " << strContent << itemRow;
                         
-                        itemRow << new QStandardItem(strRow);
-                        model.appendRow(itemRow);
-                        if(strRow.count('\n')>1)
-                            ui->tableView->resizeRowsToContents();
-                        if(isScrollToEnd)
-                            ui->tableView->scrollToBottom();
-                        lastInsertTime = clock();
-                        itemRow.clear();
-                        
+                        //TODO:这里重新格式化一下
+                        strContent = match.captured(match.lastCapturedIndex());
                         itemRow << new QStandardItem(match.captured(1))
                             << new QStandardItem(match.captured(2))
-                            << new QStandardItem(match.captured(3));
-                        
+                            << new QStandardItem(match.captured(3))
+                            << new QStandardItem(strContent);
+                        model.appendRow(itemRow);
+                        if(isScrollToEnd)
+                            ui->tableView->scrollToBottom();
+                        itemRow.clear();
 
-                        strRow = match.captured(match.lastCapturedIndex());
-                        qDebug() << strRow << itemRow;
+                        qDebug() << strContent << itemRow;
                         lineCnt++;
                     }
                     else
                     {
-                        strRow += str;
-                        qDebug()<<"======="<<strRow;
+                        if(str.isEmpty() == false)
+                        {
+                            strContent += str;
+                            QModelIndex index = model.index(model.rowCount()-1,model.columnCount()-1);
+                            
+                            model.setData(index, strContent);
+                            ui->tableView->resizeRowToContents(model.rowCount()-1);
+                            qDebug()<<"======="<<index<<strContent;
+                            if(isScrollToEnd)
+                                ui->tableView->scrollToBottom();
+                        }
                     }
                 }
                 QCoreApplication::processEvents();
                 QThread::msleep(1);
             }
+            logFile.close();
         }
     }
     logProcess.close();
     logProcess.waitForFinished();
+    
     qDebug() << "logProcess closed";
 }
