@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QProcess>
 #include <QStandardItemModel>
+#include <QActionGroup>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,9 +20,19 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QActionGroup actionGroupProcess, actionGroupColumn;
+    
     QProcess logProcess;
     QStandardItemModel model;
+    struct
+    {
+        QString processName;
+    }settings;
     
+    void closeEvent(QCloseEvent *event);
+    
+    
+    void ChangeProcess(bool isChecked);
     void Start(bool b);
 };
 #endif // MAINWINDOW_H

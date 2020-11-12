@@ -15,11 +15,21 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox">
+      <property name="text">
+       <string>隐藏</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QTextBrowser" name="textBrowser"/>
     </item>
-    <item row="1" column="0">
+    <item row="1" column="0" colspan="2">
      <widget class="QTableView" name="tableView"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLineEdit" name="lineEdit"/>
     </item>
    </layout>
   </widget>
@@ -32,6 +42,59 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <widget class="QMenu" name="menuSplitPattern">
+     <property name="title">
+      <string>SplitPattern</string>
+     </property>
+     <addaction name="actionSplitPatternXcode"/>
+     <addaction name="actionSplitPatternAlog"/>
+     <addaction name="actionSplitPattern_idevicesyslog"/>
+    </widget>
+    <addaction name="menuSplitPattern"/>
+    <addaction name="actionFormatPattern"/>
+    <addaction name="actionLogFile"/>
+    <addaction name="separator"/>
+    <addaction name="actionFastSetting"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>进程</string>
+    </property>
+    <addaction name="actionProcessAwemeInhouse"/>
+    <addaction name="actionProcessIESVideoEditorDemo"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>视图</string>
+    </property>
+    <addaction name="actionColumnTime"/>
+    <addaction name="actionColumnProcess"/>
+    <addaction name="actionColumnThread"/>
+    <addaction name="separator"/>
+    <addaction name="actionColumnFunction"/>
+    <addaction name="actionColumnLine"/>
+    <addaction name="actionColumnContent"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>筛选</string>
+    </property>
+    <addaction name="actionOnlyVESDK"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>绘图</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -45,6 +108,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStart"/>
+   <addaction name="actionOnlyVESDK"/>
+   <addaction name="actionFastSetting"/>
   </widget>
   <action name="actionStart">
    <property name="checkable">
@@ -52,6 +117,102 @@
    </property>
    <property name="text">
     <string>Start</string>
+   </property>
+  </action>
+  <action name="actionProcessAwemeInhouse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>AwemeInhouse</string>
+   </property>
+  </action>
+  <action name="actionColumnTime">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>时间</string>
+   </property>
+  </action>
+  <action name="actionColumnProcess">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>进程名</string>
+   </property>
+  </action>
+  <action name="actionColumnThread">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>线程号</string>
+   </property>
+  </action>
+  <action name="actionColumnFunction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>函数</string>
+   </property>
+  </action>
+  <action name="actionColumnLine">
+   <property name="text">
+    <string>行号</string>
+   </property>
+  </action>
+  <action name="actionColumnContent">
+   <property name="text">
+    <string>内容</string>
+   </property>
+  </action>
+  <action name="actionFormatPattern">
+   <property name="text">
+    <string>FormatPattern</string>
+   </property>
+  </action>
+  <action name="actionLogFile">
+   <property name="text">
+    <string>LogFile</string>
+   </property>
+  </action>
+  <action name="actionOnlyVESDK">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>仅显示VESDK</string>
+   </property>
+  </action>
+  <action name="actionFastSetting">
+   <property name="text">
+    <string>快速设定</string>
+   </property>
+  </action>
+  <action name="actionProcessIESVideoEditorDemo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>IESVideoEditorDemo</string>
+   </property>
+  </action>
+  <action name="actionSplitPatternXcode">
+   <property name="text">
+    <string>SplitPatternXcode</string>
+   </property>
+  </action>
+  <action name="actionSplitPatternAlog">
+   <property name="text">
+    <string>SplitPatternAlog</string>
+   </property>
+  </action>
+  <action name="actionSplitPattern_idevicesyslog">
+   <property name="text">
+    <string>SplitPattern_idevicesyslog</string>
    </property>
   </action>
  </widget>
