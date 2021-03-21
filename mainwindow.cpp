@@ -95,6 +95,8 @@ void MainWindow::Start(bool b)
             QFile logFile("device.log");
             logFile.open(QFile::WriteOnly);
             
+            QString filterPattern = ui->lineEdit->text();
+            
             while(ui->actionStart->isChecked() == true)
             {
                 QByteArray arr = logProcess.readLine();
@@ -113,7 +115,7 @@ void MainWindow::Start(bool b)
                     QRegularExpressionMatch match = splitPattern.match(str);
                     isScrollToEnd = ui->tableView->verticalScrollBar()->value()>ui->tableView->verticalScrollBar()->maximum()-
                     ui->tableView->rowHeight(model.rowCount()-1);
-                    if((match.hasMatch() && match.lastCapturedIndex() == 4))
+                    if((match.hasMatch() && match.lastCapturedIndex() == 4)) // 成功匹配到新log的开头
                     {
                         QList<QStandardItem *>itemRow;
                         qDebug()<<"End   " << strContent << itemRow;
@@ -130,6 +132,10 @@ void MainWindow::Start(bool b)
                         if(isScrollToEnd)
                             ui->tableView->scrollToBottom();
                         itemRow.clear();
+                        if(filterPattern.size() > 0) {
+                            if(strContent.contains(filterPattern) == true)
+                                ui->tableView->hideRow(model.rowCount() - 1);
+                        }
 
                         qDebug() << strContent << itemRow;
                         lineCnt++;
@@ -149,6 +155,11 @@ void MainWindow::Start(bool b)
                         }
                     }
                 }
+                if(ui->lineEdit->text() != filterPattern){
+                    RefreshView(model, *ui->tableView, ui->lineEdit->text());
+                    filterPattern = ui->lineEdit->text();
+                }
+                
                 QCoreApplication::processEvents();
                 
             }
@@ -161,6 +172,19 @@ void MainWindow::Start(bool b)
     ui->actionStart->setChecked(false);
     qDebug() << "logProcess closed";
     this->statusBar()->showMessage("logProcess closed");
+}
+
+void MainWindow::RefreshView(const QStandardItemModel &model, QTableView &view, QString pattern) {
+    qDebug()<<__FUNCTION__<<pattern;
+    for(int i = 0; i < model.rowCount(); i++)
+    {
+        QModelIndex index = model.index(i, 3);
+        QString str = model.data(index).toString();
+        if(str.contains(pattern))
+            view.showRow(i);
+        else
+            view.hideRow(i);
+    }
 }
 
 
