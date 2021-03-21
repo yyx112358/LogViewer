@@ -8,12 +8,23 @@
 #include <QFile>
 #include <QDateTime>
 
+const char SETTING_FILE_PATH[] = "/setting.ini";
+const char SETTING_PROCESS_NAME[] = "Process/ProcessName";
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), actionGroupProcess(this), actionGroupColumn(this)
     , logProcess(this)
+#if !DEBUG
+    , settingFile(QString("/Users/yangyixuan/Projects/LogViewer") + SETTING_FILE_PATH, QSettings::IniFormat)
+#else
+    , settingFile(QCoreApplication::applicationDirPath() + SETTING_FILE_PATH, QSettings::IniFormat)
+#endif
 {
     ui->setupUi(this);
+    
+    qDebug()<<settingFile.fileName()<<settingFile.isWritable();
+    
     connect(ui->actionStart, &QAction::triggered, this, &MainWindow::Start);
     model.setColumnCount(4);
     model.setHeaderData(0, Qt::Orientation::Horizontal, "Time");
@@ -47,9 +58,15 @@ MainWindow::MainWindow(QWidget *parent)
         QAction *action = actionGroupProcess.addAction(processName);
         action->setCheckable(true);
         ui->menu_2->addAction(action);
+        
+        QString settingName = settingFile.value(SETTING_PROCESS_NAME).toString();
+        if(settingName.size() > 0 && settingName == processName)
+            action->setChecked(true);
+        
         connect(action, &QAction::toggled, this, &MainWindow::ChangeProcess);
     }
-    actionGroupProcess.actions()[0]->setChecked(true);
+    if(actionGroupProcess.checkedAction() == nullptr && actionGroupProcess.actions().size() > 0)
+        actionGroupProcess.actions()[0]->setChecked(true);
     
     
     qDebug()<<QCoreApplication::arguments();
@@ -141,7 +158,7 @@ void MainWindow::Start(bool b)
                         lineCnt++;
                         QThread::msleep(10);
                     }
-                    else
+                    else // 没有匹配到，则只是追加
                     {
                         if(str.isEmpty() == false && str!="\n")
                         {
@@ -155,13 +172,14 @@ void MainWindow::Start(bool b)
                         }
                     }
                 }
+                // 筛选符合条件的
                 if(ui->lineEdit->text() != filterPattern){
                     RefreshView(model, *ui->tableView, ui->lineEdit->text());
                     filterPattern = ui->lineEdit->text();
                 }
                 
                 QCoreApplication::processEvents();
-                
+                QThread::msleep(1);
             }
             logFile.close();
         }
@@ -210,5 +228,7 @@ void MainWindow::ChangeProcess(bool isChecked)
     {
         
     }
-    
+    settingFile.setValue(SETTING_PROCESS_NAME, settings.processName);
+    settingFile.sync();
+    Start(false);
 }

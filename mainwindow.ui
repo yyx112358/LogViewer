@@ -106,6 +106,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStart"/>
+   <addaction name="actionClear"/>
    <addaction name="actionOnlyVESDK"/>
    <addaction name="actionFastSetting"/>
   </widget>
@@ -114,7 +115,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Start</string>
+    <string>开始</string>
    </property>
   </action>
   <action name="actionProcessAwemeInhouse">
@@ -211,6 +212,11 @@
   <action name="actionSplitPattern_idevicesyslog">
    <property name="text">
     <string>SplitPattern_idevicesyslog</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>清空</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@
 #include <QProcess>
 #include <QStandardItemModel>
 #include <QActionGroup>
+#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,6 +31,7 @@ private:
     {
         QString processName;
     }settings;
+    QSettings settingFile;
     
     void closeEvent(QCloseEvent *event);
     
