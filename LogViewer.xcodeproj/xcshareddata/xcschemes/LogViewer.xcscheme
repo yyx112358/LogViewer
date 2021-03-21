@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D82E64369823DBD851BB14EA"
+               BlueprintIdentifier = "3FEA1CF04313C30539154561"
                BuildableName = "LogViewer.app"
                BlueprintName = "LogViewer"
                ReferencedContainer = "container:LogViewer.xcodeproj">
@@ -31,7 +31,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D82E64369823DBD851BB14EA"
+            BlueprintIdentifier = "3FEA1CF04313C30539154561"
             BuildableName = "LogViewer.app"
             BlueprintName = "LogViewer"
             ReferencedContainer = "container:LogViewer.xcodeproj">
@@ -73,7 +73,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D82E64369823DBD851BB14EA"
+            BlueprintIdentifier = "3FEA1CF04313C30539154561"
             BuildableName = "LogViewer.app"
             BlueprintName = "LogViewer"
             ReferencedContainer = "container:LogViewer.xcodeproj">
@@ -97,7 +97,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D82E64369823DBD851BB14EA"
+            BlueprintIdentifier = "3FEA1CF04313C30539154561"
             BuildableName = "LogViewer.app"
             BlueprintName = "LogViewer"
             ReferencedContainer = "container:LogViewer.xcodeproj">

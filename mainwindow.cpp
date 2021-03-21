@@ -41,13 +41,16 @@ MainWindow::MainWindow(QWidget *parent)
         action->setChecked(true);
     
     // 进程选择
-    actionGroupProcess.addAction(ui->actionProcessIESVideoEditorDemo);
-    actionGroupProcess.addAction(ui->actionProcessAwemeInhouse);
-    actionGroupProcess.setExclusive(true);
-    for(auto action:actionGroupProcess.actions())
+    QString processNames[] = {"AwemeInhouse", "IESVideoEditorDemo", "XIGVideoEditor_Example"};
+    for(auto processName : processNames)
+    {
+        QAction *action = actionGroupProcess.addAction(processName);
+        action->setCheckable(true);
+        ui->menu_2->addAction(action);
         connect(action, &QAction::toggled, this, &MainWindow::ChangeProcess);
+    }
+    actionGroupProcess.actions()[0]->setChecked(true);
     
-    ui->actionProcessAwemeInhouse->setChecked(true);
     
     qDebug()<<QCoreApplication::arguments();
     statusBar()->showMessage(QCoreApplication::arguments().join(' '));
